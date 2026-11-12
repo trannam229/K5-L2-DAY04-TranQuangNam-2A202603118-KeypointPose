@@ -1,0 +1,43 @@
+{
+ "mssv": "2A202603118",
+ "ten": "TranQuangNam",
+ "pool_version": "d04-k5-v2",
+ "cvat_user": "nate9a",
+ "project": "d04-keypoint",
+ "persons": [
+  "000000072098.jpg",
+  "000000164659.jpg",
+  "000000194027.jpg",
+  "000000390585.jpg",
+  "000000525227.jpg",
+  "000000078170.jpg",
+  "000000156986.jpg",
+  "000000516902.jpg",
+  "000000123544.jpg",
+  "000000515309.jpg",
+  "000000323705.jpg",
+  "000000272026.jpg"
+ ],
+ "faces": [
+  "face_145751.jpg",
+  "face_155465.jpg",
+  "face_380639.jpg",
+  "face_137371.jpg",
+  "face_442231.jpg",
+  "face_380754.jpg",
+  "face_99874.jpg",
+  "face_483667.jpg"
+ ],
+ "tasks": {
+  "persons": {
+   "task_id": 17,
+   "job_id": 17,
+   "task_name": "persons-TranQuangNam"
+  },
+  "faces": {
+   "task_id": 18,
+   "job_id": 18,
+   "task_name": "faces-TranQuangNam"
+  }
+ }
+}
