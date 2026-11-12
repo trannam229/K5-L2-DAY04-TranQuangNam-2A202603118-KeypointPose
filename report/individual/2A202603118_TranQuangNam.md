@@ -6,13 +6,13 @@ Dữ liệu: 12 ảnh người COCO val2017 (Lin et al., 2014) và 8 ảnh chân
 
 - Họ tên: Trần Quang Nam
 - MSSV: 2A202603118
-- Email:
+- Email: tranquangnam244@gmail.com
 - Link repository: https://github.com/trannam229/K5-L2-DAY04-TranQuangNam-2A202603118-KeypointPose
 - Phiên bản CVAT (Help → About): 2.74.1
 - Máy: hệ điều hành macOS 26.6 · RAM 16 GB (Docker dùng 7.7 GB) · chạy CVAT chế độ đầy đủ
 - Bộ ảnh (`src/exports/assignment.json` do `lab.py setup` tạo): có
-- Giờ bắt đầu:
-- Giờ kết thúc:
+- Giờ bắt đầu: 16:56 ngày 12/11/2026 (chạy `lab.py setup`)
+- Giờ kết thúc: 19:18 ngày 12/11/2026 (lần `lab.py export` cuối)
 
 ## 1. Kiểm tra label (CP0)
 
