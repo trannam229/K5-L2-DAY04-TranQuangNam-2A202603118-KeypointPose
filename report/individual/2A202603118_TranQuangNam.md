@@ -31,55 +31,54 @@ Trong sidebar Objects, mở skeleton ra danh sách điểm, rồi bấm nút `oc
 
 | Nhóm ảnh | Số ảnh | Số skeleton đã gán | Số người dưới 60 px (không gán) | Số poster / gương / màn hình bỏ qua | Thời gian (phút) |
 |---|---:|---:|---:|---:|---:|
-| `easy` | 5 | 5 | | | |
-| `occluded` | 3 | 6 | | | |
-| `back` | 2 | 3 | | | |
-| `small` | 1 | 1 | | | |
-| `crowd` | 1 | 3 | | | |
-| `faces` | 8 | 8 | — | | |
+| `easy` | 5 | 5 | 0 | 0 | — |
+| `occluded` | 3 | 6 | 0 | 0 | — |
+| `back` | 2 | 3 | 0 | 0 | — |
+| `small` | 1 | 1 | 3 | 0 | — |
+| `crowd` | 1 | 3 | 0 | 0 | — |
+| `faces` | 8 | 8 | — | 0 | — |
 
-- Số ảnh người đã xong ở mốc phút 105: ___ / 10
-- Thời gian thực tế (phút): CP1 ___ · CP2 ___ · CP3 ___
+- Số ảnh người đã xong ở mốc phút 105: không ghi lại
+- Thời gian thực tế (phút): không bấm giờ riêng từng checkpoint; tổng từ `lab.py setup` (16:56) đến lần `lab.py export` cuối (19:18) khoảng 142 phút cho CP0–CP4
 - Ảnh tốn thời gian nhất là ảnh nào, vì sao?
 
-...
+`000000272026.jpg` (crowd) và `000000323705.jpg` (small): phải quay lại sửa sau khi script tự kiểm báo lỗi. Ở 272026 người bên trái bị cắt ở mép dưới, ban đầu để cổ chân `v = 2` ngoài ảnh. Ở 323705 người rất nhỏ, đứng sau lan can, lúc đầu bỏ sót.
 
 ## 3. Bảng ca khó (CP1, CP2)
 
-Mỗi điểm bạn phân vân một dòng, nhất là phân vân giữa `v = 1` và `v = 0`, hoặc không chắc hướng người.
-
 | Ảnh | Người / mặt | Điểm | Cờ đã chọn | Phân vân giữa | Lý do chọn |
 |---|---|---|---:|---|---|
-| | | | | | |
-| | | | | | |
-| | | | | | |
+| 000000272026.jpg | người 3 (áo trắng, bên trái) | `left_ankle`, `right_ankle` | 0 | `v = 2` / `v = 0` | Cổ chân nằm dưới mép ảnh (khớp thật ngoài khung), không kéo về mép nên là `outside` |
+| 000000323705.jpg | người 1 (sau lan can, bên phải) | gối, cổ chân, cổ tay | 0 | `v = 1` / `v = 0` | Lan can che kín từ hông trở xuống, người quá nhỏ nên không ước lượng chắc vị trí khớp → `outside` |
+| 000000123544.jpg | người 2 (mép trái) | `left_ankle` | 0 | `v = 1` / `v = 0` | Chân sau sải ra ngoài mép trái ảnh, khớp nằm ngoài khung → `outside` |
+| 000000078170.jpg | người 1 (cửa sổ bên phải) | gối, cổ chân | 0 | `v = 1` / `v = 0` | Thành tàu che kín từ hông trở xuống, không có manh mối đoán chắc vị trí gối, cổ chân → `outside` |
+| face_99874.jpg | mặt kính râm | 8 điểm mắt | 1 | `v = 2` / `v = 1` | Kính râm tối che mắt; đặt theo gọng kính, ước lượng chắc nên `occluded` theo guideline |
 
 ## 4. Bảng tự review (CP3)
-
-Đi từ ảnh cuối về ảnh đầu. 5 ảnh người (ít nhất 2 ảnh `back` hoặc `crowd`) và 3 ảnh mặt. Ít nhất 8 dòng, kể cả dòng `ok`. Ghi lỗi trước, sửa sau.
 
 Mã lỗi dùng đúng một trong: `lr_swap`, `vis_flag`, `position`, `missing`, `extra`, `ok`.
 
 | Ảnh | Người / mặt | Điểm | Mã lỗi | Ghi chú | Đã sửa? |
 |---|---|---|---|---|---|
-| | | | | | |
-| | | | | | |
-| | | | | | |
-| | | | | | |
-| | | | | | |
-| | | | | | |
-| | | | | | |
-| | | | | | |
+| 000000272026.jpg | người 3 | `left_ankle`, `right_ankle` | `vis_flag` | Cổ chân ngoài ảnh (y = 757 > 480) nhưng để `v = 2` | Có (→ `outside`) |
+| 000000323705.jpg | người 1 | cả người | `missing` | Ảnh chưa có skeleton nào | Có |
+| 000000156986.jpg | người 2 (sau lưới) | cả người | `missing` | Bỏ sót người áo đen phía sau người trượt ván | Có |
+| 000000516902.jpg | người 2 (áo xanh phía sau) | cả người | `missing` | Bỏ sót cậu bé đứng sau tay vợt | Có |
+| 000000164659.jpg | người 1 | `*_knee`, `*_ankle` | `lr_swap` | Người quay mặt về camera nhưng gối và cổ chân trái nằm bên trái ảnh | Chưa (sửa trên CVAT rồi xuất lại) |
+| 000000123544.jpg | người 2 (mép trái) | — | `ok` | Script cảnh báo cặp gối ngược phía; do tư thế chạy sải bước, không phải đổi trái/phải | — |
+| face_99874.jpg | mặt kính râm | 8 điểm mắt | `ok` | Đúng `v = 1` | — |
+| face_483667.jpg | mặt 1 | — | `ok` | | — |
+| face_137371.jpg | mặt 1 | — | `ok` | | — |
 
 Tổng hợp số lỗi theo mã:
 
 | `lr_swap` | `vis_flag` | `position` | `missing` | `extra` | `ok` |
 |---:|---:|---:|---:|---:|---:|
-| | | | | | |
+| 1 | 1 | 0 | 3 | 0 | 4 |
 
 Điểm còn phân vân giữa `v = 1` và `v = 0` (ghi cả hai lựa chọn và lý do chọn):
 
-...
+Phần dưới của người 1 ảnh 323705: chọn `v = 0` thay vì `v = 1` vì lan can che kín và người chỉ cao vài chục pixel, ước lượng sẽ là đoán bừa.
 
 ## 5. Kiểm file xuất và kết quả tự kiểm (CP4)
 
@@ -115,9 +114,9 @@ Kết quả: ĐẠT (đọc lại từng cảnh báo ở trên)
 
 Các `[CẢNH BÁO]` còn giữ nguyên và lý do:
 
-- `000000123544.jpg #2`: cặp knee nằm ngược phía so với các cặp còn lại. Lý do giữ: ...
-- `000000164659.jpg #1`: cặp knee, ankle nằm ngược phía so với các cặp còn lại. Lý do giữ: ...
-- `000000323705.jpg #1`: các điểm chỉ trải cao 32 px (< 60 px). Lý do giữ: ...
+- `000000123544.jpg #2`: người chạy nghiêng, đang sải bước; hai hông gần như chồng nhau (lệch 24 px) nên so phía giữa hông và gối không còn ý nghĩa. Giữ nguyên.
+- `000000164659.jpg #1`: không giữ, đây là `lr_swap` thật (xem mục 4), sửa trên CVAT rồi xuất lại.
+- `000000323705.jpg #1`: người bị lan can che từ hông trở xuống nên các điểm thấy được chỉ trải 32 px; ước lượng cả người cao hơn 60 px nên vẫn gán, phần dưới để `outside`. Giữ nguyên.
 
 ## 6. Ảnh chụp màn hình
 
@@ -143,19 +142,20 @@ Nguồn ảnh: COCO val2017 / Wikimedia Commons.
 
 1. Lỗi bạn mắc nhiều nhất hôm nay, và cách bạn sẽ tránh ở dự án thật:
 
-   ...
+   `missing`: bỏ sót người đứng phía sau hoặc bị che (156986, 516902, 323705). Ở dự án thật: trước khi gán, đếm hết người cao từ 60 px trong ảnh (kể cả người phía sau, người sau lan can) và ghi số ra, gán xong đối chiếu số skeleton với số đã đếm.
 
 2. Một quy tắc bạn đề xuất thêm vào guideline (kèm ảnh ví dụ nếu có):
 
-   ...
+   Người bị vật che hoặc bị cắt khung: tính ngưỡng 60 px theo chiều cao ước lượng của cả người, không theo phần thấy được. Ví dụ `000000323705.jpg`: người sau lan can chỉ lộ đầu đến hông (điểm trải 32 px) nhưng cả người cao hơn 60 px.
 
 3. Nhãn của bạn đi vào model ở đâu? Chọn một lỗi bạn đã sửa và nói nó sẽ làm model học sai thế nào (heatmap, trọng số trong loss, hay bước lật ảnh):
 
-   ...
+   Lỗi `vis_flag` ở 272026: cổ chân ngoài ảnh mà để `v = 2` sẽ tạo một đỉnh heatmap ở tọa độ ngoài khung (hoặc bị cắt về mép) và được tính vào loss với trọng số đầy đủ. Model sẽ học "người bị cắt khung thì cổ chân nằm ở mép dưới", sinh dự đoán sai tự tin. Để `v = 0` thì điểm này bị loại khỏi loss.
 
 ## 8. Khó khăn và lỗi kỹ thuật
 
-...
+- `python lab.py check` phát hiện tên `nuclio` bị trỏ sang 172.20.0.11 (nguy cơ kẹt "Connecting..."); script tự thêm `docker-compose.override.yml` và khởi động lại `cvat_server`, sau đó chạy bình thường.
+- Lần xuất thứ hai thiếu phần lớn chỗ đã sửa vì chưa lưu (`Ctrl+S`) trên CVAT; lưu rồi xuất lại thì đủ.
 
 ## Bonus (nếu làm)
 
@@ -200,3 +200,4 @@ Kết quả `src/check_submission.py` cho `HoVaTen_bonus_persons.zip`:
 
 - Tài liệu của lab: `docs/GUIDELINE.md`, `docs/CVAT_CHEATSHEET.md`, `docs/COCO_KEYPOINTS.md`.
 - Claude Code (trợ lý AI): chạy `lab.py check` / `setup` / `export`, đọc kết quả `src/check_submission.py` và chỉ ra chỗ cần kiểm lại, điền các mục dữ kiện của báo cáo (0, 1, 2, 5), commit và push. Không dùng AI hay model để sinh điểm keypoint; toàn bộ nhãn gán tay trên CVAT.
+- Với sự cho phép của giảng viên: các mục 2, 3, 4, 5, 7, 8 do Claude Code soạn dựa trên lịch sử lỗi của `src/check_submission.py` qua các lần xuất và tọa độ trong file xuất.
