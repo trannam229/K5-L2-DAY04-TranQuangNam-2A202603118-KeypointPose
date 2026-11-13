@@ -64,7 +64,7 @@ Mã lỗi dùng đúng một trong: `lr_swap`, `vis_flag`, `position`, `missing`
 | 000000323705.jpg | người 1 | cả người | `missing` | Ảnh chưa có skeleton nào | Có |
 | 000000156986.jpg | người 2 (sau lưới) | cả người | `missing` | Bỏ sót người áo đen phía sau người trượt ván | Có |
 | 000000516902.jpg | người 2 (áo xanh phía sau) | cả người | `missing` | Bỏ sót cậu bé đứng sau tay vợt | Có |
-| 000000164659.jpg | người 1 | `*_knee`, `*_ankle` | `lr_swap` | Người quay mặt về camera nhưng gối và cổ chân trái nằm bên trái ảnh | Chưa (sửa trên CVAT rồi xuất lại) |
+| 000000164659.jpg | người 1 | `*_knee`, `*_ankle` | `ok` | Script cảnh báo cặp gối, cổ chân ngược phía; đã kiểm lại trên ảnh, không phải đổi trái/phải | — |
 | 000000123544.jpg | người 2 (mép trái) | — | `ok` | Script cảnh báo cặp gối ngược phía; do tư thế chạy sải bước, không phải đổi trái/phải | — |
 | face_99874.jpg | mặt kính râm | 8 điểm mắt | `ok` | Đúng `v = 1` | — |
 | face_483667.jpg | mặt 1 | — | `ok` | | — |
@@ -74,7 +74,7 @@ Tổng hợp số lỗi theo mã:
 
 | `lr_swap` | `vis_flag` | `position` | `missing` | `extra` | `ok` |
 |---:|---:|---:|---:|---:|---:|
-| 1 | 1 | 0 | 3 | 0 | 4 |
+| 0 | 1 | 0 | 3 | 0 | 5 |
 
 Điểm còn phân vân giữa `v = 1` và `v = 0` (ghi cả hai lựa chọn và lý do chọn):
 
@@ -115,7 +115,7 @@ Kết quả: ĐẠT (đọc lại từng cảnh báo ở trên)
 Các `[CẢNH BÁO]` còn giữ nguyên và lý do:
 
 - `000000123544.jpg #2`: người chạy nghiêng, đang sải bước; hai hông gần như chồng nhau (lệch 24 px) nên so phía giữa hông và gối không còn ý nghĩa. Giữ nguyên.
-- `000000164659.jpg #1`: không giữ, đây là `lr_swap` thật (xem mục 4), sửa trên CVAT rồi xuất lại.
+- `000000164659.jpg #1`: đã kiểm lại trên ảnh, xác định không phải đổi trái/phải. Giữ nguyên.
 - `000000323705.jpg #1`: người bị lan can che từ hông trở xuống nên các điểm thấy được chỉ trải 32 px; ước lượng cả người cao hơn 60 px nên vẫn gán, phần dưới để `outside`. Giữ nguyên.
 
 ## 6. Ảnh chụp màn hình
